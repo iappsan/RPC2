@@ -95,7 +95,7 @@ def write(fileName, text):
     str = ''
     try:
         myFile = open(fileName, 'a')
-        myFile.write(text)
+        myFile.write(text+'\n')
         myFile.close()
     except:
         str = 'Error durante escritura de archivo'
