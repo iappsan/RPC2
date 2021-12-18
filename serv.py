@@ -64,8 +64,8 @@ def rmdir(folderName):  #Borrar directorio 4
         str = f'No existe el folder {folderName}'
     return str
 
-def ls():               #Listar 5
-    output = os.popen('ls').read()
+def ls(homeDir):               #Listar 5
+    output = os.popen(f'ls {homeDir}').read()
     return (output)
 
 def cd(cdDir):          #Cambiar directorio 6
