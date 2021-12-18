@@ -3,7 +3,7 @@ import os
 
 userList = []
 
-def verifyUserFile(usr):
+def verifyUserFile(usr):    # Verifica la carpeta del usuario
     try:
         os.chdir(usr)
         os.chdir('..')
@@ -11,7 +11,7 @@ def verifyUserFile(usr):
     except:
         os.mkdir(usr)
 
-def auth(usr, password):
+def auth(usr, password):    # Autenticar usuario
     global userList
     credOk = False
     for user in userList:
@@ -21,23 +21,23 @@ def auth(usr, password):
 
     if credOk:
         verifyUserFile(usr)
-        return (f'Usuario {usr} accediendo {str(pwd())}')
+        return (True)
     else:
-        return (f'Usuario o contrasena incorrectos')
+        return (False)
 
-def createFile(newName):
+def createFile(newName):    # Crea un archivo
     os.system(f'touch {newName}')
 
-def rename(oldFile, newFile):
+def rename(oFile, nFile):   # Renombrar 1
     str = ''
     try:
-        os.rename(oldFile, newFile)
-        str = f'archivo {oldFile} renombrado'
+        os.rename(oFile, nFile)
+        str = f'archivo {oFile} renombrado'
     except:
         str = 'No se pudo renombrar'
     return str
 
-def remove(fileToRm):   #Borrar archivo
+def remove(fileToRm):   #Borrar archivo 2
     str = ''
     try:
         os.remove(fileToRm)
@@ -46,7 +46,7 @@ def remove(fileToRm):   #Borrar archivo
         str = 'No existe el archivo {fileToRm}'
     return str
 
-def mkdir(folderName):  #Crear directorio
+def mkdir(folderName):  #Crear directorio 3
     str = ''
     try:
         os.mkdir(folderName)
@@ -55,7 +55,7 @@ def mkdir(folderName):  #Crear directorio
         str = f'Ya existe {folderName}'
     return str
 
-def rmdir(folderName):  #Borrar directorio
+def rmdir(folderName):  #Borrar directorio 4
     str = ''
     try:
         os.rmdir(folderName)
@@ -64,36 +64,39 @@ def rmdir(folderName):  #Borrar directorio
         str = f'No existe el folder {folderName}'
     return str
 
-def ls():               #Listar
+def ls():               #Listar 5
     output = os.popen('ls').read()
     return (output)
 
-def cd(cdDir):          #Cambiar directorio
-    os.chdir(cdDir)
-    output = os.popen('pwd').read()
-    str = f'Nueva dir: {output}'
-    return str
+def cd(cdDir):          #Cambiar directorio 6
+    try:
+        os.chdir(cdDir)
+        os.chdir('..')
+        return True
+    except:
+        return False
 
 def pwd():              #Imprime directorio
     output = os.popen('pwd').read()
     return output
 
-def test():             #funcion de prueba
-    print('\n')
-    stream = os.popen('pwd')
-    output = stream.read()
-    return (output)
-
-def rnw(fileName, text):
+def read(fileName):    # Modifica archivo 7
     str = ''
     try:
-        myFile = open(fileName, 'r')
-        lines = myFile.readlines()
-
+        str = open(fileName, 'r').readlines()
     except:
-        str = 'Error durante uso de archivo'
+        str = 'Error durante lectura de archivo'
     return str
 
+def write(fileName, text):
+    str = ''
+    try:
+        myFile = open(fileName, 'a')
+        myFile.write(text)
+        myFile.close()
+    except:
+        str = 'Error durante escritura de archivo'
+    return str
 
 def main():
     global userList
@@ -101,14 +104,14 @@ def main():
     server = SimpleXMLRPCServer(("172.16.8.23", 5432))
     server.register_function(auth)
     server.register_function(createFile)
-    server.register_function(rnw)
+    server.register_function(read)
+    server.register_function(write)
     server.register_function(rename)
     server.register_function(remove)
     server.register_function(mkdir)
     server.register_function(rmdir)
     server.register_function(ls)
     server.register_function(cd)
-    server.register_function(test)
 
     uFile = open('users', 'r').readlines()
     uList = []

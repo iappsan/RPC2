@@ -8,7 +8,9 @@ for u in uFile:
 for user in uList:
     uListF.append(user.split('|'))
 
-print (uListF[1][0])
+print (uListF)
 
-
-os.chdir('321saas')
+myFile = open('users', 'a')
+str1 = 'cosaoc|3222\n'
+myFile.write(str1)
+myFile.close()
