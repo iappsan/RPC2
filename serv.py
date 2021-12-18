@@ -25,9 +25,6 @@ def auth(usr, password):    # Autenticar usuario
     else:
         return (False)
 
-def createFile(newName):    # Crea un archivo
-    os.system(f'touch {newName}')
-
 def rename(oFile, nFile):   # Renombrar 1
     str = ''
     try:
@@ -65,13 +62,19 @@ def rmdir(folderName):  #Borrar directorio 4
     return str
 
 def ls(homeDir):               #Listar 5
+    print (pwd())
     output = os.popen(f'ls {homeDir}').read()
     return (output)
 
 def cd(cdDir):          #Cambiar directorio 6
     try:
         os.chdir(cdDir)
-        os.chdir('..')
+        print (pwd())
+        str2 = cdDir.split('/')
+        for i in range(0,len(str2)):
+            os.chdir('..')
+        print (pwd())
+        print('-----------------\n')
         return True
     except:
         return False
@@ -97,6 +100,10 @@ def write(fileName, text):
     except:
         str = 'Error durante escritura de archivo'
     return str
+
+def createFile(newName):    # Crea un archivo 8
+    os.system(f'touch {newName}')
+    return (f'Archivo {newName} creado')
 
 def main():
     global userList
